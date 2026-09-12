@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#102a6b" />
+  <title>루틴캘린더 — 나의 일정</title>
+  <meta name="description" content="반복되는 고정 일과와 일회성 일정을 한 화면에서 관리하는 캘린더" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23102a6b'/%3E%3Cpath d='M9 8v4m14-4v4M7 13h18M9 10h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V12a2 2 0 0 1 2-2Z' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">R</span><span>루틴캘린더</span></div>
+      <div class="month-nav">
+        <button class="icon-button" id="prevMonth" aria-label="이전 달">‹</button>
+        <h1 id="monthTitle"></h1>
+        <button class="icon-button" id="nextMonth" aria-label="다음 달">›</button>
+        <button class="today-button" id="todayButton">오늘</button>
+      </div>
+      <button class="primary-button" id="saveButton">저장</button>
+    </header>
+
+    <section class="calendar-card" aria-label="월간 캘린더">
+      <div class="weekday-row"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
+      <div class="calendar-grid" id="calendarGrid"></div><p class="empty-calendar hidden" id="emptyCalendar">아직 등록된 일정이 없어요.<br><span>아래에서 첫 일정을 추가해보세요.</span></p>
+    </section>
+
+    <section class="bottom-panel" aria-label="일정 도구">
+      <div class="panel-header"><div><p class="eyebrow">SCHEDULE TOOLS</p><h2>일정을 더해보세요</h2></div><p class="panel-note">변경 사항은 이 기기에 안전하게 저장돼요.</p></div>
+      <div class="tool-grid">
+        <button class="tool-card routine-card" id="openRoutine"><span class="tool-icon">+</span><span><strong>고정 일과 추가</strong><small>매주 반복되는 일정</small></span><span class="arrow">→</span></button>
+        <button class="tool-card" id="openEvent"><span class="tool-icon calendar-icon">□</span><span><strong>일회성 일정 추가</strong><small>특정 날짜에만 추가</small></span><span class="arrow">→</span></button>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop hidden" id="modalBackdrop" role="presentation"></div>
+  <section class="modal hidden" id="routineModal" role="dialog" aria-modal="true" aria-labelledby="routineHeading">
+    <div class="modal-head"><div><p class="eyebrow">RECURRING ROUTINE</p><h2 id="routineHeading">고정 일과 추가</h2></div><button class="close-button" data-close aria-label="닫기">×</button></div>
+    <form id="routineForm">
+      <label>일과 이름<input required name="title" maxlength="30" placeholder="예: 영어 과외" /></label>
+      <label>간략한 설명 <span class="optional">선택</span><input name="description" maxlength="70" placeholder="예: 과외 선생님과 온라인 수업" /></label>
+      <div class="form-row"><label>요일<select name="weekday" required><option value="1">매주 월요일</option><option value="2">매주 화요일</option><option value="3">매주 수요일</option><option value="4">매주 목요일</option><option value="5">매주 금요일</option><option value="6">매주 토요일</option><option value="0">매주 일요일</option></select></label><label>시작 시간<input type="time" name="start" required value="19:00" /></label><label>종료 시간<input type="time" name="end" required value="21:00" /></label></div>
+      <div class="modal-actions"><button type="button" class="delete-button hidden" id="deleteRoutine">삭제</button><button type="button" class="text-button" data-close>취소</button><button class="primary-button" type="submit">고정 일과 저장</button></div>
+    </form>
+  </section>
+  <section class="modal hidden" id="eventModal" role="dialog" aria-modal="true" aria-labelledby="eventHeading">
+    <div class="modal-head"><div><p class="eyebrow">ONE-TIME EVENT</p><h2 id="eventHeading">일회성 일정 추가</h2></div><button class="close-button" data-close aria-label="닫기">×</button></div>
+    <form id="eventForm">
+      <label>일정 이름<input required name="title" maxlength="30" placeholder="예: 팀플 회의" /></label>
+      <label>날짜<input type="date" name="date" required /></label>
+      <div class="form-row"><label>시작 시간<input type="time" name="start" required value="13:00" /></label><label>종료 시간<input type="time" name="end" required value="14:00" /></label></div>
+      <div class="modal-actions"><button type="button" class="delete-button hidden" id="deleteEvent">삭제</button><button type="button" class="text-button" data-close>취소</button><button class="primary-button" type="submit">일정 저장</button></div>
+    </form>
+  </section>
+  <div class="loading hidden" id="loading"><div class="spinner"></div><span>불러오는 중이에요</span></div>
+  <div class="toast hidden" id="toast" role="status"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
