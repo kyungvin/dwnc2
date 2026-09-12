@@ -1,8 +1,9 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.1';
+import { createClient } from '@supabase/supabase-js';
 
 const $ = (s) => document.querySelector(s);
 const grid = $('#calendarGrid'), title = $('#monthTitle'), loading = $('#loading'), toast = $('#toast'), emptyCalendar = $('#emptyCalendar');
-const runtime = window.__ENV__ || import.meta.env || {};
+// Vite가 .env.local의 VITE_ 접두사 변수를 빌드 시 주입합니다.
+const runtime = import.meta.env;
 const supabaseUrl = runtime.VITE_SUPABASE_URL || '';
 const supabaseKey = runtime.VITE_SUPABASE_ANON_KEY || '';
 let supabase, ownerId, routines = [], events = [], editing = null;
