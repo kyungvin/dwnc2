@@ -17,6 +17,8 @@ function notify(message, error = false) { toast.textContent = message; toast.cla
 function setLoading(show) { loading.classList.toggle('hidden', !show); }
 function dbError(error, action = '처리') { console.error(error); notify(`${action}에 실패했어요. 다시 시도해주세요.`, true); }
 async function initialise() {
+  // Supabase 연결 상태와 관계없이 달력 골격은 즉시 보여줍니다.
+  render();
   setLoading(true);
   if (!supabaseUrl || !supabaseKey) { setLoading(false); notify('Supabase 환경변수를 설정한 뒤 다시 열어주세요.', true); return; }
   supabase = createClient(supabaseUrl, supabaseKey);
